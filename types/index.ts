@@ -10,7 +10,7 @@ export interface Product {
   description: string
   price: number
   condition: string
-  status: 'available' | 'reserved'
+  status: 'available' | 'reserved' | 'hidden'
   createdAt: string
   images: ProductImage[]
 }
@@ -33,4 +33,4 @@ export type ProductCondition =
   | 'bon état'
   | 'état correct'
 
-export type ProductStatus = 'available' | 'reserved'
+export type ProductStatus = 'available' | 'reserved' | 'hidden'

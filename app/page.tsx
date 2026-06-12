@@ -7,8 +7,9 @@ export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
   const products = await getAllProducts()
-  const available = products.filter((p) => p.status === 'available')
-  const reserved = products.filter((p) => p.status === 'reserved')
+  const visible = products.filter((p) => p.status !== 'hidden')
+  const available = visible.filter((p) => p.status === 'available')
+  const reserved = visible.filter((p) => p.status === 'reserved')
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -45,7 +46,7 @@ export default async function HomePage() {
         </div>
 
         {/* Products */}
-        {products.length === 0 ? (
+        {visible.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-7xl mb-4">🏪</div>
             <h3 className="text-xl font-bold text-gray-600">La boutique est vide pour l&apos;instant</h3>

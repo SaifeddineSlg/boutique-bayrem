@@ -157,7 +157,7 @@ export default function ProductForm({ mode, product }: Props) {
             Statut *
           </label>
           <div className="flex gap-3">
-            {(['available', 'reserved'] as const).map((s) => (
+            {(['available', 'reserved', 'hidden'] as const).map((s) => (
               <button
                 key={s}
                 type="button"
@@ -166,11 +166,13 @@ export default function ProductForm({ mode, product }: Props) {
                   form.status === s
                     ? s === 'available'
                       ? 'bg-green-100 border-green-400 text-green-700'
-                      : 'bg-red-100 border-red-400 text-red-700'
+                      : s === 'reserved'
+                      ? 'bg-red-100 border-red-400 text-red-700'
+                      : 'bg-gray-100 border-gray-400 text-gray-700'
                     : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
                 }`}
               >
-                {s === 'available' ? '✅ Disponible' : '🔒 Réservé'}
+                {s === 'available' ? '✅ Disponible' : s === 'reserved' ? '🔒 Réservé' : '👁️ Caché'}
               </button>
             ))}
           </div>

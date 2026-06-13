@@ -25,7 +25,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
   const { id } = await params
   try {
     const body = await request.json()
-    const { name, description, price, condition, status, imageUrls } = body
+    const { name, description, price, condition, status, stock, imageUrls } = body
 
     const product = await updateProduct(parseInt(id), {
       name,
@@ -33,6 +33,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
       price: parseFloat(price),
       condition: condition || 'bon état',
       status: status || 'available',
+      stock: parseInt(stock) || 1,
       imageUrls: imageUrls || [],
     })
 

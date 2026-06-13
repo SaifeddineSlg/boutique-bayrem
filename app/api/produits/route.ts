@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json()
-    const { name, description, price, condition, status, imageUrls } = body
+    const { name, description, price, condition, status, stock, imageUrls } = body
 
     if (!name || price === undefined) {
       return NextResponse.json({ error: 'Champs requis manquants' }, { status: 400 })
@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
       price: parseFloat(price),
       condition: condition || 'bon état',
       status: status || 'available',
+      stock: parseInt(stock) || 1,
       imageUrls: imageUrls || [],
     })
 

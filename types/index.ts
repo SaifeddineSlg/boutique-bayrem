@@ -10,9 +10,41 @@ export interface Product {
   description: string
   price: number
   condition: string
-  status: 'available' | 'reserved' | 'hidden'
+  status: 'available' | 'reserved' | 'hidden' | 'sold'
+  stock: number
   createdAt: string
   images: ProductImage[]
+}
+
+export interface CartItem {
+  productId: number
+  name: string
+  price: number
+  imageUrl: string
+  quantity: number
+  stock: number
+}
+
+export interface OrderItem {
+  id: number
+  orderId: number
+  productId: number
+  productName: string
+  quantity: number
+  unitPrice: number
+}
+
+export interface Order {
+  id: number
+  firstName: string
+  lastName: string
+  contact: string
+  message: string
+  totalAmount: number
+  status: 'pending' | 'confirmed' | 'delivered' | 'cancelled'
+  paymentStatus: 'unpaid' | 'pending' | 'paid' | 'refunded'
+  createdAt: string
+  items: OrderItem[]
 }
 
 export interface Reservation {
@@ -33,4 +65,4 @@ export type ProductCondition =
   | 'bon état'
   | 'état correct'
 
-export type ProductStatus = 'available' | 'reserved' | 'hidden'
+export type ProductStatus = 'available' | 'reserved' | 'hidden' | 'sold'

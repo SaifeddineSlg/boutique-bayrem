@@ -1,17 +1,17 @@
 import Link from 'next/link'
-import { getAllProducts, getAllReservations } from '@/lib/db'
+import { getAllProducts, getAllOrders } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AdminDashboardPage() {
-  const [products, reservations] = await Promise.all([
+  const [products, orders] = await Promise.all([
     getAllProducts(),
-    getAllReservations(),
+    getAllOrders(),
   ])
 
   const availableCount = products.filter((p) => p.status === 'available').length
-  const reservedCount = products.filter((p) => p.status === 'reserved').length
-  const pendingReservations = reservations.filter((r) => !r.processed).length
+  const soldCount = products.filter((p) => p.status === 'sold').length
+  const pendingOrders = orders.filter((o) => o.status === 'pending').length
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -39,8 +39,8 @@ export default async function AdminDashboardPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           <StatCard emoji="📦" label="Total produits" value={products.length} color="bg-purple-100 text-purple-700" />
           <StatCard emoji="✅" label="Disponibles" value={availableCount} color="bg-green-100 text-green-700" />
-          <StatCard emoji="🔒" label="Réservés" value={reservedCount} color="bg-red-100 text-red-700" />
-          <StatCard emoji="📋" label="Réservations en attente" value={pendingReservations} color="bg-yellow-100 text-yellow-700" />
+          <StatCard emoji="🏷️" label="Vendus" value={soldCount} color="bg-gray-100 text-gray-700" />
+          <StatCard emoji="📋" label="Commandes en attente" value={pendingOrders} color="bg-yellow-100 text-yellow-700" />
         </div>
 
         {/* Quick actions */}
@@ -58,15 +58,15 @@ export default async function AdminDashboardPage() {
           </Link>
 
           <Link
-            href="/admin/reservations"
+            href="/admin/commandes"
             className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-gray-100 flex items-center gap-4 group"
           >
             <div className="text-4xl group-hover:scale-110 transition-transform">📋</div>
             <div>
-              <h3 className="font-extrabold text-gray-800">Voir les réservations</h3>
+              <h3 className="font-extrabold text-gray-800">Voir les commandes</h3>
               <p className="text-gray-500 text-sm">
-                {pendingReservations > 0
-                  ? `${pendingReservations} en attente de traitement`
+                {pendingOrders > 0
+                  ? `${pendingOrders} en attente de traitement`
                   : 'Toutes traitées ✅'}
               </p>
             </div>

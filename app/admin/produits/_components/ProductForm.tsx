@@ -19,6 +19,7 @@ export default function ProductForm({ mode, product }: Props) {
     price: product?.price?.toString() || '',
     condition: product?.condition || 'bon état',
     status: product?.status || 'available',
+    stock: product?.stock?.toString() || '1',
   })
   const [imageUrls, setImageUrls] = useState<string[]>(
     product?.images.map((i) => i.imageUrl) || ['']
@@ -68,6 +69,7 @@ export default function ProductForm({ mode, product }: Props) {
         body: JSON.stringify({
           ...form,
           price: parseFloat(form.price),
+          stock: parseInt(form.stock) || 1,
           imageUrls: validUrls,
         }),
       })
@@ -120,7 +122,7 @@ export default function ProductForm({ mode, product }: Props) {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
               Prix (€) *
@@ -134,6 +136,21 @@ export default function ProductForm({ mode, product }: Props) {
               onChange={(e) => setForm({ ...form, price: e.target.value })}
               className="w-full border-2 border-gray-200 focus:border-purple-400 rounded-xl px-4 py-2 outline-none transition-colors"
               placeholder="5.00"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Stock *
+            </label>
+            <input
+              type="number"
+              required
+              min="0"
+              step="1"
+              value={form.stock}
+              onChange={(e) => setForm({ ...form, stock: e.target.value })}
+              className="w-full border-2 border-gray-200 focus:border-purple-400 rounded-xl px-4 py-2 outline-none transition-colors"
+              placeholder="1"
             />
           </div>
           <div>
@@ -156,8 +173,8 @@ export default function ProductForm({ mode, product }: Props) {
           <label className="block text-sm font-semibold text-gray-700 mb-1">
             Statut *
           </label>
-          <div className="flex gap-3">
-            {(['available', 'reserved', 'hidden'] as const).map((s) => (
+          <div className="flex gap-2 flex-wrap">
+            {(['available', 'reserved', 'sold', 'hidden'] as const).map((s) => (
               <button
                 key={s}
                 type="button"
@@ -168,11 +185,13 @@ export default function ProductForm({ mode, product }: Props) {
                       ? 'bg-green-100 border-green-400 text-green-700'
                       : s === 'reserved'
                       ? 'bg-red-100 border-red-400 text-red-700'
+                      : s === 'sold'
+                      ? 'bg-gray-200 border-gray-500 text-gray-700'
                       : 'bg-gray-100 border-gray-400 text-gray-700'
                     : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
                 }`}
               >
-                {s === 'available' ? '✅ Disponible' : s === 'reserved' ? '🔒 Réservé' : '👁️ Caché'}
+                {s === 'available' ? '✅ Disponible' : s === 'reserved' ? '🔒 Réservé' : s === 'sold' ? '🏷️ Vendu' : '👁️ Caché'}
               </button>
             ))}
           </div>

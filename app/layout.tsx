@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { CartProvider } from '@/contexts/CartContext'
 
 export const metadata: Metadata = {
   title: 'Les Petits Prix de Bayrem — Jeux et jouets pour enfants aux Mureaux',
@@ -28,7 +29,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body><CartProvider>{children}</CartProvider></body>
     </html>
   )
 }

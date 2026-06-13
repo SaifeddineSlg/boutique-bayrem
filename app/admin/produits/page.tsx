@@ -52,6 +52,7 @@ export default async function AdminProduitsPage() {
                   <tr className="bg-gray-50 border-b border-gray-100">
                     <th className="text-left px-4 py-3 text-sm font-bold text-gray-600">Produit</th>
                     <th className="text-left px-4 py-3 text-sm font-bold text-gray-600">Prix</th>
+                    <th className="text-left px-4 py-3 text-sm font-bold text-gray-600">Stock</th>
                     <th className="text-left px-4 py-3 text-sm font-bold text-gray-600">État</th>
                     <th className="text-left px-4 py-3 text-sm font-bold text-gray-600">Statut</th>
                     <th className="text-right px-4 py-3 text-sm font-bold text-gray-600">Actions</th>
@@ -81,18 +82,23 @@ export default async function AdminProduitsPage() {
                         </div>
                       </td>
                       <td className="px-4 py-3 font-bold text-purple-600">{product.price.toFixed(2)} €</td>
+                      <td className="px-4 py-3">
+                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${product.stock === 0 ? 'bg-red-100 text-red-600' : product.stock <= 3 ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'}`}>
+                          {product.stock}
+                        </span>
+                      </td>
                       <td className="px-4 py-3 text-sm text-gray-600">{product.condition}</td>
                       <td className="px-4 py-3">
-                        <span
-                          className={`text-xs font-bold px-2 py-1 rounded-full ${
-                            product.status === 'available'
-                              ? 'bg-green-100 text-green-700'
-                              : product.status === 'hidden'
-                              ? 'bg-gray-100 text-gray-600'
-                              : 'bg-red-100 text-red-700'
-                          }`}
-                        >
-                          {product.status === 'available' ? '✅ Disponible' : product.status === 'hidden' ? '👁️ Caché' : '🔒 Réservé'}
+                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${
+                          product.status === 'available' ? 'bg-green-100 text-green-700'
+                          : product.status === 'reserved' ? 'bg-red-100 text-red-700'
+                          : product.status === 'sold' ? 'bg-gray-200 text-gray-700'
+                          : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          {product.status === 'available' ? '✅ Disponible'
+                            : product.status === 'reserved' ? '🔒 Réservé'
+                            : product.status === 'sold' ? '🏷️ Vendu'
+                            : '👁️ Caché'}
                         </span>
                       </td>
                       <td className="px-4 py-3">

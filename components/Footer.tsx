@@ -14,7 +14,7 @@ export default function Footer() {
               Remise en main propre
             </h3>
             <p className="text-white/80 text-sm">
-              Aux Mureaux (école Emile Zola ou rendez-vous convenu).
+              Aux Mureaux (école Émile Zola ou rendez-vous convenu).
             </p>
           </div>
           <div>

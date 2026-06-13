@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createOrder, getAllOrders } from '@/lib/db'
 import { verifyToken, COOKIE_NAME } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
+import { sendOrderNotification } from '@/lib/email'
 
 export async function GET(request: NextRequest) {
   const token = request.cookies.get(COOKIE_NAME)?.value
@@ -41,6 +42,13 @@ export async function POST(request: NextRequest) {
 
     revalidatePath('/')
     revalidatePath('/admin/commandes')
+
+    // Send email notification (non-blocking)
+    if (result.orderId) {
+      const orders = await getAllOrders()
+      const order = orders.find((o) => o.id === result.orderId)
+      if (order) sendOrderNotification(order).catch(console.error)
+    }
 
     return NextResponse.json({ success: true, orderId: result.orderId }, { status: 201 })
   } catch (error) {
